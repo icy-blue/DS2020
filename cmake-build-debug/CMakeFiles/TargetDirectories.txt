@@ -1,0 +1,3 @@
+C:/Users/i/CLionProjects/DS2020/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/i/CLionProjects/DS2020/cmake-build-debug/CMakeFiles/DS2020.dir
+C:/Users/i/CLionProjects/DS2020/cmake-build-debug/CMakeFiles/rebuild_cache.dir
