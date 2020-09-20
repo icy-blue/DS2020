@@ -17,10 +17,17 @@ public:
     double x, y;
     double angle;
 
-    explicit Point(int id, double x, double y) {
+    Point(int id, double x, double y) {
         this->id = id;
         this->x = x;
         this->y = y;
+    }
+
+    Point(const Point &obj) {
+        this->id = obj.id;
+        this->x = obj.x;
+        this->y = obj.y;
+        this->angle = obj.angle;
     }
 };
 
