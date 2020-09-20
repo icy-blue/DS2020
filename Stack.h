@@ -52,6 +52,7 @@ void Stack<T>::push(T element) {
 
 template<class T>
 void Stack<T>::pop() {
+    _size--;
     list.popBack();
 }
 
