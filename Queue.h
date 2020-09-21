@@ -6,11 +6,11 @@
 #ifndef DS2020_QUEUE_H
 #define DS2020_QUEUE_H
 
-#include "LinkedList.h"
+#include "DoubleLinkedList.h"
 
 template<typename T>
 class Queue {
-    LinkedList<T> list;
+    DoubleLinkedList<T> list;
     int _length;
 public:
     int length();

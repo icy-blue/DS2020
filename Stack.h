@@ -6,12 +6,12 @@
 #ifndef DS2020_STACK_H
 #define DS2020_STACK_H
 
-#include "LinkedList.h"
+#include "DoubleLinkedList.h"
 
 template<class T>
 class Stack {
 private:
-    LinkedList<T> list;
+    DoubleLinkedList<T> list;
     int _size = 0;
 public:
     bool isEmpty() const;

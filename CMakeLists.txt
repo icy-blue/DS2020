@@ -3,4 +3,4 @@ project(DS2020)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(DS2020 main.cpp LinkedList.h Stack.h Queue.h pair.h)
+add_executable(DS2020 main.cpp DoubleLinkedList.h Stack.h Queue.h pair.h)
