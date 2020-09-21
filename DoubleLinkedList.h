@@ -117,6 +117,8 @@ public:
     DoubleLinkedList(const DoubleLinkedList &obj);
 
     ~DoubleLinkedList();
+
+    DoubleLinkedList<T> reverse();
 };
 
 
@@ -428,5 +430,15 @@ int DoubleLinkedList<T>::indexOf(T &data) const {
     });
     return res;
 }
+
+template<typename T>
+DoubleLinkedList<T> DoubleLinkedList<T>::reverse() {
+    auto tmp = DoubleLinkedList<T>();
+    forEach([](T &x) -> void {
+        tmp.pushFront(x);
+    }, true);
+    return tmp;
+}
+
 
 #endif //DS2020_DOUBLELINKEDLIST_H

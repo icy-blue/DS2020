@@ -9,6 +9,8 @@ using std::cin;
 using std::vector;
 using std::pair;
 using std::sort;
+using std::cout;
+using std::endl;
 using std::for_each;
 
 class Point {
@@ -64,17 +66,16 @@ int main() {
         pointStack.push(pre1);
         pointStack.push(x);
     });
-    auto getDistance = [&](Point &a, Point &b) -> double {
-        return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
-    };
-    double ans = 0;
-    Point tmp = points[0];
     while (!pointStack.isEmpty()) {
         Point top = pointStack.top();
-        ans += getDistance(top, tmp);
-        tmp = pointStack.top();
+        cout << top.id << " ";
         pointStack.pop();
     }
-    printf("%.2lf", ans);
+    puts("===================");
+    DoubleLinkedList<int> list;
+    list.pushBack(1);
+    list.pushBack(2);
+    list.pushBack(3);
+
     return 0;
 }
