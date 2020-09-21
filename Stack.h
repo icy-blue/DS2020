@@ -36,7 +36,7 @@ bool Stack<T>::isEmpty() const {
 
 template<class T>
 T Stack<T>::top() const {
-    return list.get(0);
+    return list.get(_size - 1);
 }
 
 template<class T>
