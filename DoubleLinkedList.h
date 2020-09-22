@@ -35,8 +35,8 @@ public:
         friend class DoubleLinkedList;
 
     private:
-        Node *pos;
-        DoubleLinkedList<T> *parent;
+        Node *_pos;
+        DoubleLinkedList<T> *_parent;
 
         explicit iterator(Node *pos, DoubleLinkedList<T> *parent);
 
@@ -94,6 +94,8 @@ public:
 
     void forEach(std::function<void(T &)> const &func, bool front);
 
+    void forEach(std::function<void(T &)> const &func, bool front) const;
+
     int ifRemove(std::function<bool(T &)> const &func, bool front);
 
     void clear();
@@ -110,9 +112,17 @@ public:
 
     typename DoubleLinkedList::iterator rend();
 
-    void addAll(DoubleLinkedList<T> &list, bool thisFront, bool listFront);
+    typename DoubleLinkedList::iterator begin() const;
 
-    int indexOf(T &data) const;
+    typename DoubleLinkedList::iterator rbegin() const;
+
+    typename DoubleLinkedList::iterator end() const;
+
+    typename DoubleLinkedList::iterator rend() const;
+
+    void addAll(const DoubleLinkedList<T> &list, bool thisFront, bool listFront);
+
+    int indexOf(T data);
 
     DoubleLinkedList(const DoubleLinkedList &obj);
 
@@ -123,9 +133,8 @@ public:
 
 
 template<typename T>
-DoubleLinkedList<T>::iterator::iterator(DoubleLinkedList::Node *pos, DoubleLinkedList<T> *parent) {
-    this->pos = pos;
-    this->parent = parent;
+DoubleLinkedList<T>::iterator::iterator(DoubleLinkedList::Node *pos, DoubleLinkedList<T> *parent) :
+        _pos(pos), _parent(parent) {
 }
 
 template<typename T>
@@ -150,75 +159,75 @@ void DoubleLinkedList<T>::iterator::operator--() {
 
 template<typename T>
 bool DoubleLinkedList<T>::iterator::operator==(const DoubleLinkedList::iterator &r) const {
-    return this->pos == r.pos;
+    return this->_pos == r._pos;
 }
 
 template<typename T>
 bool DoubleLinkedList<T>::iterator::operator!=(const DoubleLinkedList::iterator &r) const {
-    return this->pos != r.pos;
+    return this->_pos != r._pos;
 }
 
 template<typename T>
 T DoubleLinkedList<T>::iterator::operator*() const {
-    return this->pos->_data;
+    return this->_pos->_data;
 }
 
 template<typename T>
 bool DoubleLinkedList<T>::iterator::hasNext() const {
-    return pos->next != nullptr;
+    return _pos->next != nullptr;
 }
 
 template<typename T>
 bool DoubleLinkedList<T>::iterator::hasPre() const {
-    return pos->prev != nullptr;
+    return _pos->prev != nullptr;
 }
 
 template<typename T>
 void DoubleLinkedList<T>::iterator::next() {
-    pos = pos->next;
+    _pos = _pos->next;
 }
 
 template<typename T>
 void DoubleLinkedList<T>::iterator::pre() {
-    pos = pos->prev;
+    _pos = _pos->prev;
 }
 
 template<typename T>
 T DoubleLinkedList<T>::iterator::get() const {
-    return pos->_data;
+    return _pos->_data;
 }
 
 template<typename T>
 void DoubleLinkedList<T>::iterator::insertBefore(T data) {
-    if (pos == parent->head)
-        parent->pushFront(data);
+    if (_pos == _parent->head)
+        _parent->pushFront(data);
     else
-        parent->insertBehind(pos->prev, data);
+        _parent->insertBehind(_pos->prev, data);
 }
 
 template<typename T>
 void DoubleLinkedList<T>::iterator::insertBehind(T data) {
-    parent->insertBehind(pos, data);
+    _parent->insertBehind(_pos, data);
 }
 
 template<typename T>
 void DoubleLinkedList<T>::iterator::remove() {
     if (hasNext()) {
         next();
-        Node *node = this->pos->prev;
-        parent->delNode(node);
+        Node *node = this->_pos->prev;
+        _parent->delNode(node);
     } else if (hasPre()) {
         pre();
-        Node *node = this->pos->next;
-        parent->delNode(node);
+        Node *node = this->_pos->next;
+        _parent->delNode(node);
     } else {
-        parent->delNode(this->pos);
+        _parent->delNode(this->_pos);
     }
 }
 
 template<typename T>
 void DoubleLinkedList<T>::iterator::set(T element) {
-    pos->_data = element;
+    _pos->_data = element;
 }
 
 template<typename T>
@@ -337,6 +346,19 @@ void DoubleLinkedList<T>::forEach(const std::function<void(T &)> &func, bool fro
 }
 
 template<typename T>
+void DoubleLinkedList<T>::forEach(const std::function<void(T &)> &func, bool front) const {
+    if (front) {
+        for (Node *it = head; it != nullptr; it = it->next) {
+            func(it->_data);
+        }
+    } else {
+        for (Node *it = tail; it != nullptr; it = it->prev) {
+            func(it->_data);
+        }
+    }
+}
+
+template<typename T>
 int DoubleLinkedList<T>::ifRemove(const std::function<bool(T &)> &func, bool front) {
     int cnt = 0;
     if (front) {
@@ -405,6 +427,26 @@ typename DoubleLinkedList<T>::iterator DoubleLinkedList<T>::rend() {
 }
 
 template<typename T>
+typename DoubleLinkedList<T>::iterator DoubleLinkedList<T>::begin() const {
+    return iterator(this->head, this);
+}
+
+template<typename T>
+typename DoubleLinkedList<T>::iterator DoubleLinkedList<T>::rbegin() const {
+    return iterator(this->tail, this);
+}
+
+template<typename T>
+typename DoubleLinkedList<T>::iterator DoubleLinkedList<T>::end() const {
+    return iterator(nullptr, this);
+}
+
+template<typename T>
+typename DoubleLinkedList<T>::iterator DoubleLinkedList<T>::rend() const {
+    return iterator(nullptr, this);
+}
+
+template<typename T>
 DoubleLinkedList<T>::~DoubleLinkedList() {
     clear();
 }
@@ -415,28 +457,26 @@ DoubleLinkedList<T>::DoubleLinkedList(const DoubleLinkedList &obj) {
 }
 
 template<typename T>
-void DoubleLinkedList<T>::addAll(DoubleLinkedList<T> &list, bool thisFront, bool listFront) {
+void DoubleLinkedList<T>::addAll(const DoubleLinkedList<T> &list, bool thisFront, bool listFront) {
     if (thisFront) {
         list.forEach([&](T &x) -> void { pushFront(x); }, !listFront);
     } else list.forEach([&](T &x) -> void { pushBack(x); }, listFront);
 }
 
 template<typename T>
-int DoubleLinkedList<T>::indexOf(T &data) const {
+int DoubleLinkedList<T>::indexOf(T data) {
     int pos = -1, res = -1;
     forEach([&](T &x) -> void {
         pos++;
         if (x == data) res = res == -1 ? pos : res;
-    });
+    }, true);
     return res;
 }
 
 template<typename T>
 DoubleLinkedList<T> DoubleLinkedList<T>::reverse() {
     auto tmp = DoubleLinkedList<T>();
-    forEach([](T &x) -> void {
-        tmp.pushFront(x);
-    }, true);
+    tmp.addAll(*this, true, true);
     return tmp;
 }
 

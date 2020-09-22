@@ -8,7 +8,7 @@
 
 #include "DoubleLinkedList.h"
 
-template<class T>
+template<typename T>
 class Stack {
 private:
     DoubleLinkedList<T> list;
@@ -16,7 +16,7 @@ private:
 public:
     bool isEmpty() const;
 
-    T top() const;
+    T top();
 
     int size() const;
 
@@ -29,37 +29,37 @@ public:
     ~Stack();
 };
 
-template<class T>
+template<typename T>
 bool Stack<T>::isEmpty() const {
     return list.isEmpty();
 }
 
-template<class T>
-T Stack<T>::top() const {
-    return list.get(_size - 1);
+template<typename T>
+T Stack<T>::top() {
+    return list.rbegin().get();
 }
 
-template<class T>
+template<typename T>
 int Stack<T>::size() const {
     return this->_size;
 }
 
-template<class T>
+template<typename T>
 void Stack<T>::push(T element) {
     _size++;
     list.pushBack(element);
 }
 
-template<class T>
+template<typename T>
 void Stack<T>::pop() {
     _size--;
     list.popBack();
 }
 
-template<class T>
+template<typename T>
 Stack<T>::~Stack() = default;
 
-template<class T>
+template<typename T>
 Stack<T>::Stack() = default;
 
 #endif //DS2020_STACK_H
