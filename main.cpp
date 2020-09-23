@@ -4,11 +4,10 @@
 #include <vector>
 #include <cmath>
 #include "Stack.h"
+//#include "test.h"
 
 using std::cin;
 using std::vector;
-using std::pair;
-using std::sort;
 using std::cout;
 using std::endl;
 using std::for_each;
@@ -66,16 +65,18 @@ int main() {
         pointStack.push(pre1);
         pointStack.push(x);
     });
+    auto getDistance = [&](Point &a, Point &b) -> double {
+        return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
+    };
+    double ans = 0;
+    Point tmp = points[0];
     while (!pointStack.isEmpty()) {
         Point top = pointStack.top();
-        cout << top.id << " ";
+        ans += getDistance(top, tmp);
+        tmp = pointStack.top();
         pointStack.pop();
     }
-    puts("===================");
-    DoubleLinkedList<int> list;
-    list.pushBack(1);
-    list.pushBack(2);
-    list.pushBack(3);
+    printf("%.2lf", ans);
 
     return 0;
 }

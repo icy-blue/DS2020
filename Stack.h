@@ -31,7 +31,7 @@ public:
 
 template<typename T>
 bool Stack<T>::isEmpty() const {
-    return list.isEmpty();
+    return this->_size == 0;
 }
 
 template<typename T>
