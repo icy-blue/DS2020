@@ -1,6 +1,6 @@
 /**
-	Created by Huang Jingcheng on 2020/9/9.
-	201905130198@mail.sdu.edu.cn
+  * Created by Huang Jingcheng on 2020/9/9.
+  * 201905130198@mail.sdu.edu.cn
 */
 
 #ifndef DS2020_DOUBLELINKEDLIST_H

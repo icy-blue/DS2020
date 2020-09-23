@@ -1,6 +1,6 @@
 /**
-	Created by Huang Jingcheng on 2020/9/23.
-	201905130198@mail.sdu.edu.cn
+  * Created by Huang Jingcheng on 2020/9/23.
+  * 201905130198@mail.sdu.edu.cn
 */
 
 
@@ -30,7 +30,9 @@ public:
 
     int size();
 
-    void resetCmp(std::function<bool(T &a, T &b)> cmp = [](T &a, T &b) -> bool { return a < b; });
+    void resetCmp(std::function<bool(T &a, T &b)> cmp = [](T &a, T &b) -> bool { return a < b; }) {
+        this->_cmp = cmp;
+    }
 
     explicit PriorityQueue(std::function<bool(T &a, T &b)> cmp = [](T &a, T &b) -> bool { return a < b; }) {
         this->_cmp = cmp;
@@ -92,11 +94,6 @@ T PriorityQueue<T>::top() {
 template<typename T>
 int PriorityQueue<T>::size() {
     return this->_size;
-}
-
-template<typename T>
-void PriorityQueue<T>::resetCmp(std::function<bool(T &, T &)> cmp) {
-    this->_cmp = cmp;
 }
 
 #endif //DS2020_PRIORITYQUEUE_H
