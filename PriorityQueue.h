@@ -9,6 +9,8 @@
 
 #include <vector>
 #include <functional>
+#include "Stack.h"
+#include <cstdlib>
 
 template<typename T>
 class PriorityQueue {
@@ -19,7 +21,8 @@ class PriorityQueue {
 
     bool (*_cmpFun)(T &a, T &b);
 
-    void adjustHeap();
+    bool getCmp(T &a, T &b);
+
 
 public:
     void push(T data);
@@ -46,13 +49,43 @@ public:
 template<typename T>
 void PriorityQueue<T>::push(T data) {
     _size++;
-    data.push_back(data);
-
+    _data.push_back(data);
+    Stack<unsigned int> stack;
+    stack.push(_size - 1);
+    while (!stack.isEmpty()) {
+        unsigned int x = stack.top();
+        stack.pop();
+        if (x == 0) continue;
+        int tmp = ((x + 1) >> 1) - 1;
+        if (getCmp(_data[tmp], _data[x])) {
+            std::swap(_data[tmp], _data[x]);
+            stack.push(tmp);
+        }
+    }
 }
 
 template<typename T>
 void PriorityQueue<T>::pop() {
+
+    std::swap(_data[0], _data[_size - 1]);
+    _data.pop_back();
     _size--;
+    Stack<unsigned int> stack;
+    stack.push(0);
+    while (!stack.isEmpty()) {
+        unsigned int x = stack.top();
+        stack.pop();
+        if (x >= _size) continue;
+        int tmp = ((x + 1) << 1) - 1;
+        if (tmp < _size and getCmp(_data[x], _data[tmp])) {
+            std::swap(_data[tmp], _data[x]);
+            stack.push(tmp);
+        }
+        if (tmp + 1 < _size and getCmp(_data[x], _data[tmp + 1])) {
+            std::swap(_data[tmp + 1], _data[x]);
+            stack.push(tmp + 1);
+        }
+    }
 }
 
 template<typename T>
@@ -62,7 +95,6 @@ bool PriorityQueue<T>::isEmpty() {
 
 template<typename T>
 T PriorityQueue<T>::top() {
-    if (_size == 0) return nullptr;
     return _data[0];
 }
 
@@ -72,8 +104,9 @@ int PriorityQueue<T>::size() {
 }
 
 template<typename T>
-void PriorityQueue<T>::adjustHeap() {
-
+bool PriorityQueue<T>::getCmp(T &a, T &b) {
+    if (lambda) return _cmp(a, b);
+    return _cmpFun(a, b);
 }
 
 #endif //DS2020_PRIORITYQUEUE_H

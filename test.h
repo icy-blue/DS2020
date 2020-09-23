@@ -2,6 +2,7 @@
 #include "sort.h"
 #include <algorithm>
 #include <cstring>
+#include "PriorityQueue.h"
 
 #ifndef DS2020_TEST_H
 #define DS2020_TEST_H
@@ -45,6 +46,19 @@ void testSort() {
     Algorithm<int>::sort(arr, arr + 8);
     puts("");
     std::for_each(arr, arr + 8, [](int x) -> void { printf("%d ", x); });
+}
+
+void testPQ() {
+    PriorityQueue<int> queue;
+    std::for_each(arr, arr + 8, [&](int x) -> void {
+        queue.push(x);
+        printf("%d ", queue.top());
+    });
+    puts("");
+    std::for_each(arr, arr + 8, [&](int x) -> void {
+        printf("%d ", queue.top());
+        queue.pop();
+    });
 }
 
 #endif

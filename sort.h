@@ -41,7 +41,7 @@ private:
     };
 
 public:
-    static void sort(T *first, T *second, std::function<bool(T &a, T &b)> &cmp = [](T &a, T &b) -> bool {
+    static void sort(T *first, T *second, std::function<bool(T &a, T &b)> cmp = [](T &a, T &b) -> bool {
         return a < b;
     }) {
         if (second - first < 0) throw "RangeCheckError";
