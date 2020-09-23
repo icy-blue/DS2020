@@ -11,7 +11,7 @@
 template<typename T>
 class Algorithm {
 private:
-    static void qSort(T *first, T *second) {
+    static void qSort(T *first, T *second, std::function<bool(T &a, T &b)> cmp) {
         Stack<Algorithm<T>::Data> stack;
         stack.push(Data(first, second));
         while (!stack.isEmpty()) {
@@ -22,9 +22,9 @@ private:
             if (size <= 1) continue;
             int l = 0, r = size - 1, pivot = fi[l];
             while (l < r) {
-                while (l < r and fi[r] > pivot) r--;
+                while (l < r and cmp(pivot, fi[r])) r--;
                 if (l < r) fi[l++] = fi[r];
-                while (l < r and fi[l] < pivot) l++;
+                while (l < r and cmp(fi[l], pivot)) l++;
                 if (l < r) fi[r--] = fi[l];
             }
             fi[l] = pivot;
@@ -45,7 +45,7 @@ public:
         return a < b;
     }) {
         if (second - first < 0) throw "RangeCheckError";
-        qSort(first, second);
+        qSort(first, second, cmp);
     }
 };
 
