@@ -11,6 +11,7 @@
 #include <functional>
 #include "Stack.h"
 #include <cstdlib>
+#include "sort.h"
 
 template<typename T>
 class PriorityQueue {
@@ -32,6 +33,7 @@ public:
 
     void resetCmp(std::function<bool(T &a, T &b)> cmp = [](T &a, T &b) -> bool { return a < b; }) {
         this->_cmp = cmp;
+        Algorithm<T>::sort(_data.begin(), _data.end(), _cmp);
     }
 
     explicit PriorityQueue(std::function<bool(T &a, T &b)> cmp = [](T &a, T &b) -> bool { return a < b; }) {
