@@ -39,25 +39,42 @@ void test() {
     list.indexOf(0);
 }
 
-static int arr[] = {1, 5, 7, 9, 8, 2, 4, 6};
+static int arr[] = {1, 5, 7, 9, 8, 2, 4, 6, 3};
 
 void testSort() {
-    std::for_each(arr, arr + 8, [](int x) -> void { printf("%d ", x); });
-    Algorithm<int>::sort(arr, arr + 8);
+    std::for_each(arr, arr + 9, [](int x) -> void { printf("%d ", x); });
+    Algorithm<int>::sort(arr, arr + 9);
     puts("");
-    std::for_each(arr, arr + 8, [](int x) -> void { printf("%d ", x); });
+    std::for_each(arr, arr + 9, [](int x) -> void { printf("%d ", x); });
+}
+
+bool cmp(int &a, int &b) {
+    return 2 * a > b;
 }
 
 void testPQ() {
-    PriorityQueue<int> queue;
-    std::for_each(arr, arr + 8, [&](int x) -> void {
+    puts("-------9->1-------");
+    PriorityQueue<int> queue{};
+    std::for_each(arr, arr + 9, [&](int x) -> void {
         queue.push(x);
         printf("%d ", queue.top());
     });
     puts("");
-    std::for_each(arr, arr + 8, [&](int x) -> void {
+    std::for_each(arr, arr + 9, [&](int x) -> void {
         printf("%d ", queue.top());
         queue.pop();
+    });
+    puts("\n-------1->9-------");
+//    PriorityQueue<int> queue2(cmp);
+    PriorityQueue<int> queue2([&](int &a, int &b) -> bool { return a > b; });
+    std::for_each(arr, arr + 9, [&](int x) -> void {
+        queue2.push(x);
+        printf("%d ", queue2.top());
+    });
+    puts("");
+    std::for_each(arr, arr + 9, [&](int x) -> void {
+        printf("%d ", queue2.top());
+        queue2.pop();
     });
 }
 

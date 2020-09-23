@@ -47,11 +47,6 @@ public:
         if (second - first < 0) throw "RangeCheckError";
         qSort(first, second);
     }
-
-    static void sort(T *first, T *second, bool (*cmp)(T &a, T &b)) {
-        if (second - first < 0) throw "RangeCheckError";
-        qSort(first, second);
-    }
 };
 
 #endif //DS2020_SORT_H
