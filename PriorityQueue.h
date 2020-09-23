@@ -15,7 +15,7 @@
 
 template<typename T>
 class PriorityQueue {
-    int _size = 0;
+    unsigned int _size = 0;
     std::vector<T> _data;
     std::function<bool(T &a, T &b)> _cmp;
 
@@ -46,22 +46,20 @@ void PriorityQueue<T>::push(T data) {
     _size++;
     _data.push_back(data);
     Stack<unsigned int> stack;
-    stack.push(_size - 1);
+    if (_size > 1) stack.push(_size - 1);
     while (!stack.isEmpty()) {
         unsigned int x = stack.top();
         stack.pop();
-        if (x == 0) continue;
-        int tmp = ((x + 1) >> 1) - 1;
+        unsigned int tmp = ((x + 1u) >> 1u) - 1;
         if (_cmp(_data[tmp], _data[x])) {
             std::swap(_data[tmp], _data[x]);
-            stack.push(tmp);
+            if (tmp > 0) stack.push(tmp);
         }
     }
 }
 
 template<typename T>
 void PriorityQueue<T>::pop() {
-
     std::swap(_data[0], _data[_size - 1]);
     _data.pop_back();
     _size--;
@@ -70,15 +68,23 @@ void PriorityQueue<T>::pop() {
     while (!stack.isEmpty()) {
         unsigned int x = stack.top();
         stack.pop();
-        if (x >= _size) continue;
-        int tmp = ((x + 1) << 1) - 1;
+        unsigned int tmp = ((x + 1u) << 1u) - 1u;
+        int cnt = 0;
         if (tmp < _size and _cmp(_data[x], _data[tmp])) {
             std::swap(_data[tmp], _data[x]);
-            stack.push(tmp);
+            if (tmp < _size) stack.push(tmp), cnt++;
+
         }
         if (tmp + 1 < _size and _cmp(_data[x], _data[tmp + 1])) {
             std::swap(_data[tmp + 1], _data[x]);
-            stack.push(tmp + 1);
+            if (tmp + 1 < _size) stack.push(tmp + 1), cnt++;
+        }
+        if (cnt == 2) {
+            std::swap(_data[tmp + 1], _data[tmp]);
+            x = stack.top();
+            stack.pop();
+            stack.pop();
+            stack.push(x);
         }
     }
 }
