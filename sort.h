@@ -43,9 +43,9 @@ private:
 
     class Data {
     public:
-        int *_left, *_right;
+        T *_left, *_right;
 
-        explicit Data(int *left, int *right) : _left(left), _right(right) {}
+        explicit Data(T *left, T *right) : _left(left), _right(right) {}
     };
 
 public:
