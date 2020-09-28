@@ -41,6 +41,24 @@ private:
         }
     }
 
+    static void stableSort(T *first, T *second, std::function<bool(T &a, T &b)> cmp) {
+        int length = second - first;
+        std::vector<T> tmp(length);
+        Stack<Data> stack;
+        stack.push(Data(first, second));
+        while (!stack.isEmpty()) {
+            Data x = stack.top();
+            stack.pop();
+            T *fi = x._left, *se = x._right;
+            unsigned int size = se - fi;
+            if (size <= 1) continue;
+            int mid = fi + (size >> 1u);
+            stack.push(Data(fi, mid));
+            stack.push(Data(mid + 1, se));
+
+        }
+    }
+
     class Data {
     public:
         T *_left, *_right;
