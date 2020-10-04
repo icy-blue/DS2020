@@ -9,14 +9,6 @@
 #include <cmath>
 #include "ConvexHull.h"
 
-/*
-4
-4 8
-4 12
-5 9.3
-7 8
-*/
-
 using std::cin;
 using std::cout;
 using std::endl;
@@ -33,13 +25,8 @@ int main() {
     }
     ConvexHull hull(nodes);
     int result = hull.getHull();
-    double ans = 0;
-    auto getDistance = [](MyNode &a, MyNode &b) -> double {
-        return sqrt(pow(a.x - b.x, 2) + pow(a.y - b.y, 2));
-    };
+
     for (int i = 1; i < result; i++) {
-        ans += getDistance(nodes[i], nodes[i - 1]);
+        printf("%d ", nodes[i].id);
     }
-    ans += getDistance(nodes[0], nodes[result - 1]);
-    cout << ans << endl;
 }
