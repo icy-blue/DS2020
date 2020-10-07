@@ -7,26 +7,26 @@
 #include <algorithm>
 #include <vector>
 #include <cmath>
+#include <chrono>
 #include "ConvexHull.h"
+#include "sort.h"
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::vector;
+int array[50009];
 
 int main() {
-    static vector<MyNode> nodes;
     int n;
     cin >> n;
     for (int i = 0; i < n; i++) {
-        double a, b;
-        cin >> a >> b;
-        nodes.emplace_back(i, a, b);
+        cin >> array[i];
     }
-    ConvexHull hull(nodes);
-    int result = hull.getHull();
-
-    for (int i = 1; i < result; i++) {
-        printf("%d ", nodes[i].id);
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::shuffle(array, array + n, std::default_random_engine(seed));
+    Algorithm<int>::sort(array, array + n);
+    for (int i = 0; i < n; i++) {
+        cout << array[i] << " ";
     }
 }
