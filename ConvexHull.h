@@ -23,7 +23,7 @@ public:
 };
 
 class ConvexHull {
-    std::vector<MyNode> &_nodes;
+    std::vector<MyNode> &innerNodes;
     const double eps = 1e-6;
 
     double cross(int a1, int a2, int b, int start, int length) {
@@ -31,17 +31,17 @@ class ConvexHull {
         a1 += length, a2 += length;
         a1 %= length, a2 %= length;
         a1 += start, a2 += start;
-        double x1 = _nodes[b].x - _nodes[a1].x;
-        double x2 = _nodes[b].x - _nodes[a2].x;
-        double y1 = _nodes[b].y - _nodes[a1].y;
-        double y2 = _nodes[b].y - _nodes[a2].y;
+        double x1 = innerNodes[b].x - innerNodes[a1].x;
+        double x2 = innerNodes[b].x - innerNodes[a2].x;
+        double y1 = innerNodes[b].y - innerNodes[a1].y;
+        double y2 = innerNodes[b].y - innerNodes[a2].y;
         return x1 * y2 - x2 * y1;
     }
 
     void roll(int l, int r, bool isLeft) {
         std::vector<MyNode> tmp;
         for (int i = l; i < r; i++) {
-            tmp.push_back(_nodes[i]);
+            tmp.push_back(innerNodes[i]);
         }
         int num = 0;
         for (int i = 0; i < r - l; i++) {
@@ -49,8 +49,8 @@ class ConvexHull {
             else num = tmp[i].rank < tmp[num].rank ? i : num;
         }
         for (int i = 0; i < r - l; i++) {
-            if (isLeft) _nodes[i + l] = tmp[(i + num) % (r - l)];
-            else _nodes[i + l] = tmp[(i + num + 1) % (r - l)];
+            if (isLeft) innerNodes[i + l] = tmp[(i + num) % (r - l)];
+            else innerNodes[i + l] = tmp[(i + num + 1) % (r - l)];
         }
         tmp.clear();
     }
@@ -111,16 +111,16 @@ class ConvexHull {
             }
         }
         for (int i = b2; i != b1; i = (i - mid + 1) % lengthB + mid) {
-            tmp.push_back(_nodes[i]);
+            tmp.push_back(innerNodes[i]);
         }
-        tmp.push_back(_nodes[b1]);
+        tmp.push_back(innerNodes[b1]);
         for (int i = a1; i != a2; i = (i - l + 1) % lengthA + l) {
-            tmp.push_back(_nodes[i]);
+            tmp.push_back(innerNodes[i]);
         }
-        tmp.push_back(_nodes[a2]);
+        tmp.push_back(innerNodes[a2]);
         int len = tmp.size();
         for (int i = 0; i < len; i++) {
-            _nodes[l + i] = tmp[i];
+            innerNodes[l + i] = tmp[i];
         }
         tmp.clear();
         return len;
@@ -132,9 +132,9 @@ class ConvexHull {
         int length = r - l;
         if (length < 3) return length;
         if (length == 3) {
-            if ((_nodes[l + 1].x - _nodes[l].x) * (_nodes[l + 2].y - _nodes[l].y) -
-                (_nodes[l + 2].x - _nodes[l].x) * (_nodes[l + 1].y - _nodes[l].y) < 0) {
-                std::swap(_nodes[l + 1], _nodes[l + 2]); //逆时针
+            if ((innerNodes[l + 1].x - innerNodes[l].x) * (innerNodes[l + 2].y - innerNodes[l].y) -
+                (innerNodes[l + 2].x - innerNodes[l].x) * (innerNodes[l + 1].y - innerNodes[l].y) < 0) {
+                std::swap(innerNodes[l + 1], innerNodes[l + 2]); //逆时针
             }
             return 3;
         }
@@ -148,19 +148,19 @@ class ConvexHull {
 
 public:
     int getHull() {
-        std::sort(_nodes.begin(), _nodes.end(), [](MyNode &a, MyNode &b) -> bool {
+        std::sort(innerNodes.begin(), innerNodes.end(), [](MyNode &a, MyNode &b) -> bool {
             if (a.x == b.x) return a.y < b.y;
             return a.x < b.x;
         });
-        int length = std::unique(_nodes.begin(), _nodes.end()) - _nodes.begin();
+        int length = std::unique(innerNodes.begin(), innerNodes.end()) - innerNodes.begin();
         for (int i = 0; i < length; i++) {
-            _nodes[i].rank = i;
+            innerNodes[i].rank = i;
         }
         return solve(0, length);
     }
 
     explicit ConvexHull(std::vector<MyNode>
-                        &nodes) : _nodes(nodes) {}
+                        &nodes) : innerNodes(nodes) {}
 };
 
 #endif //DS2020_CONVEXHULL_H

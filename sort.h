@@ -9,6 +9,7 @@
 #include <random>
 #include <ctime>
 #include "Stack.h"
+#include <cassert>
 
 template<typename T>
 class Algorithm {
@@ -20,7 +21,7 @@ private:
         while (!stack.isEmpty()) {
             Data x = stack.top();
             stack.pop();
-            T *fi = x._left, *se = x._right;
+            T *fi = x.left, *se = x.right;
             int size = se - fi;
             if (size <= 1) continue;
             if (size == 2) {
@@ -36,7 +37,7 @@ private:
                 bool allSame = true;
                 for (int *p = fi; p < se; p++) {
                     bool a = cmp(*p, fi[0]), b = cmp(fi[0], *p);
-                    if ((a ^ b)) {
+                    if (a ^ b) {
                         allSame = false;
                         std::swap(*p, fi[0]);
                         break;
@@ -79,7 +80,7 @@ private:
         while (!stack.isEmpty()) {
             Data x = stack.top();
             stack.pop();
-            T *fi = x._left, *se = x._right;
+            T *fi = x.left, *se = x.right;
             int size = se - fi;
             if (size <= 1) continue;
             std::uniform_int_distribution<int> distribution(0, size - 1);
@@ -102,16 +103,16 @@ private:
 
     class Data {
     public:
-        T *_left, *_right;
+        T *left, *right;
 
-        explicit Data(T *left, T *right) : _left(left), _right(right) {}
+        explicit Data(T *l, T *r) : left(l), right(r) {}
     };
 
 public:
     static void sort(T *first, T *second, std::function<bool(T &a, T &b)> cmp = [](T &a, T &b) -> bool {
         return a < b;
     }) {
-        if (second < first) throw "RangeCheckError";
+        assert(second >= first);
 //        qSort(first, second, cmp);
         dualPivotSort(first, second, cmp);
     }
