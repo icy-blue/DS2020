@@ -34,28 +34,12 @@ class ThreadBinaryTree {
 private:
     std::function<bool(T, T)> cmp;
     Node *root;
-    enum class Type {
-        VisitLeftSon, VisitRightSon, VisitRoot, Query, PreorderTraversal, InorderTraversal, PostorderTraversal
-    };
-
-    class BuildState {
-        friend class ThreadBinaryTree;
-
-    private:
-        Type type;
-        Node *parent;
-
-        explicit BuildState(Type _type, Node *_parent) :
-                type(_type), parent(_parent) {}
-    };
 
     void addNode(T element) {
         if (root == nullptr) {
             root = Node(element);
             return;
         }
-        Stack<BuildState> stack;
-        stack.push(BuildState(Type::VisitRoot, nullptr));
         Node *tmp = root;
         Node *newNode = new Node(element);
         while (true) {
@@ -64,6 +48,8 @@ private:
                 if (!tmp->leftUsed) {
                     newNode->rightSon = tmp;
                     newNode->leftSon = tmp->leftSon;
+                    if (!newNode->leftSon->rightUsed)
+                        newNode->leftSon->rightSon = newNode;
                     tmp->leftSon = newNode;
                     tmp->leftUsed = 1;
                     break;
@@ -72,6 +58,8 @@ private:
                 if (!tmp->rightUsed) {
                     newNode->leftSon = tmp;
                     newNode->rightSon = tmp->rightSon;
+                    if (!newNode->rightSon->leftUsed)
+                        newNode->rightSon->leftSon = newNode;
                     tmp->rightSon = newNode;
                     tmp->leftUsed = 1;
                     break;
@@ -103,33 +91,23 @@ private:
     }
 
     Node *findPre(const Node *&node) {
-        if (node->leftUsed) {
+        if (!node->leftUsed) {
             return node->leftSon;
         }
-        Node *tmp = node;
-        while (tmp != nullptr) {
-            if (tmp->father == nullptr)return nullptr;
-            if (cmp(tmp->data, tmp->father->data)) {
-                tmp = tmp->father;
-            } else {
-                return tmp->father;
-            }
+        Node *tmp = node->leftSon;
+        while (tmp->rightUsed) {
+            tmp = tmp->rightSon;
         }
         return tmp;
     }
 
     Node *findAfter(const Node *&node) {
-        if (node->rightUsed) {
+        if (!node->rightUsed) {
             return node->rightSon;
         }
-        Node *tmp = node;
-        while (tmp != nullptr) {
-            if (tmp->father == nullptr)return nullptr;
-            if (cmp(tmp->data, tmp->father->data)) {
-                return tmp->father;
-            } else {
-                tmp = tmp->father;
-            }
+        Node *tmp = node->rightSon;
+        while (tmp->leftUsed) {
+            tmp = tmp->leftSon;
         }
         return tmp;
     }
