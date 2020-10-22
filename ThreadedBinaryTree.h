@@ -34,7 +34,7 @@ public:
 
     void addNode(T element) {
         if (root == nullptr) {
-            root = Node(element);
+            root = new Node(element);
             return;
         }
         Node *tmp = root;
@@ -178,7 +178,7 @@ private:
         return tmp;
     }
 
-    Node *findPre(const Node *&node) {
+    Node *findPre(Node *&node) {
         if (!node->leftUsed) {
             return node->leftSon;
         }
@@ -189,7 +189,7 @@ private:
         return tmp;
     }
 
-    Node *findAfter(const Node *&node) {
+    Node *findAfter(Node *&node) {
         if (!node->rightUsed) {
             return node->rightSon;
         }
