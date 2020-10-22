@@ -27,13 +27,10 @@ class ThreadBinaryTree {
         }
     };
 
-    explicit ThreadBinaryTree(std::function<bool(T, T)> &compare = [](T a, T b) -> bool {
+public:
+    explicit ThreadBinaryTree(const std::function<bool(T, T)> &compare = [](T a, T b) -> bool {
         return a < b;
     }) : cmp(compare) {}
-
-private:
-    std::function<bool(T, T)> cmp;
-    Node *root;
 
     void addNode(T element) {
         if (root == nullptr) {
@@ -73,55 +70,6 @@ private:
             tmp->depth = std::max(leftDepth, rightDepth) + 1;
             tmp = tmp->father;
         }
-    }
-
-    Node *findNode(const T &element) const {
-        if (root == nullptr)return nullptr;
-        Node *tmp = root;
-        while (!(cmp(element, tmp->data) ^ cmp(tmp->data, element))) {
-            if (cmp(element, tmp->data)) {
-                if (tmp->leftUsed) tmp = tmp->leftSon;
-                else return nullptr;
-            } else {
-                if (tmp->rightUsed) tmp = tmp->rightSon;
-                else return nullptr;
-            }
-        }
-        return tmp;
-    }
-
-    Node *findPre(const Node *&node) {
-        if (!node->leftUsed) {
-            return node->leftSon;
-        }
-        Node *tmp = node->leftSon;
-        while (tmp->rightUsed) {
-            tmp = tmp->rightSon;
-        }
-        return tmp;
-    }
-
-    Node *findAfter(const Node *&node) {
-        if (!node->rightUsed) {
-            return node->rightSon;
-        }
-        Node *tmp = node->rightSon;
-        while (tmp->leftUsed) {
-            tmp = tmp->leftSon;
-        }
-        return tmp;
-    }
-
-    Node *findFirst() {
-        Node *node = root;
-        while (node->leftUsed)node = node->leftSon;
-        return node;
-    }
-
-    Node *findLast() {
-        Node *node = root;
-        while (node->rightUsed)node = node->rightSon;
-        return node;
     }
 
     void delNode(T element) {
@@ -209,6 +157,59 @@ private:
                 node = findPre(node);
             }
         }
+    }
+
+private:
+    std::function<bool(T, T)> cmp;
+    Node *root;
+
+    Node *findNode(const T &element) const {
+        if (root == nullptr)return nullptr;
+        Node *tmp = root;
+        while (!(cmp(element, tmp->data) ^ cmp(tmp->data, element))) {
+            if (cmp(element, tmp->data)) {
+                if (tmp->leftUsed) tmp = tmp->leftSon;
+                else return nullptr;
+            } else {
+                if (tmp->rightUsed) tmp = tmp->rightSon;
+                else return nullptr;
+            }
+        }
+        return tmp;
+    }
+
+    Node *findPre(const Node *&node) {
+        if (!node->leftUsed) {
+            return node->leftSon;
+        }
+        Node *tmp = node->leftSon;
+        while (tmp->rightUsed) {
+            tmp = tmp->rightSon;
+        }
+        return tmp;
+    }
+
+    Node *findAfter(const Node *&node) {
+        if (!node->rightUsed) {
+            return node->rightSon;
+        }
+        Node *tmp = node->rightSon;
+        while (tmp->leftUsed) {
+            tmp = tmp->leftSon;
+        }
+        return tmp;
+    }
+
+    Node *findFirst() {
+        Node *node = root;
+        while (node->leftUsed)node = node->leftSon;
+        return node;
+    }
+
+    Node *findLast() {
+        Node *node = root;
+        while (node->rightUsed)node = node->rightSon;
+        return node;
     }
 };
 
