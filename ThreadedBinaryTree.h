@@ -112,6 +112,18 @@ private:
         return tmp;
     }
 
+    Node *findFirst() {
+        Node *node = root;
+        while (node->leftUsed)node = node->leftSon;
+        return node;
+    }
+
+    Node *findLast() {
+        Node *node = root;
+        while (node->rightUsed)node = node->rightSon;
+        return node;
+    }
+
     void delNode(T element) {
         Node *node = findNode(element);
         if (node == nullptr)return;
@@ -181,6 +193,22 @@ private:
         if (pre != nullptr and !pre->rightUsed) pre->rightSon = after;
         if (after != nullptr and !after->leftUsed) after->leftSon = pre;
         delete node;
+    }
+
+    void forEach(bool isReverse, const std::function<void(T)> &function) {
+        if (!isReverse) {
+            Node *node = findFirst();
+            while (node != nullptr) {
+                function(node->data);
+                node = findAfter(node);
+            }
+        } else {
+            Node *node = findLast();
+            while (node != nullptr) {
+                function(node->data);
+                node = findPre(node);
+            }
+        }
     }
 };
 
