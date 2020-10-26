@@ -5,6 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include <random>
+#include <ctime>
 #include "ThreadedBinaryTree.h"
 #include "Tree.h"
 
@@ -24,22 +25,32 @@ public:
     }
 };
 
-static int data[100009];
+static int data[109];
 
 int main() {
     int n;
     cin >> n;
-    std::default_random_engine rng;
-    std::uniform_int_distribution<int> generator(1, 20);
     ThreadBinaryTree<myInt> tree{};
     for (int i = 0; i < n; i++) {
-        data[i] = generator(rng);
-        tree.addNode(myInt(data[i]));
+        data[i] = i;
     }
     std::shuffle(data, data + n, std::mt19937(std::random_device()()));
+    for (int i = 0; i < n; i++) {
+        tree.addNode(myInt(data[i]));
+        cout << data[i] << " ";
+    }
+    puts("");
+    std::shuffle(data, data + n, std::mt19937(std::random_device()()));
     tree.forEach(false, [](myInt a) -> void { cout << a.data << " "; });
+    puts("");
     tree.forEach(true, [](myInt a) -> void { cout << a.data << " "; });
+    puts("");
+    for (int i = 0; i < n; i++) {
+        cout << data[i] << " ";
+    }
+    puts("");
     for (int i = 0; i < n; i++) {
         tree.delNode(myInt(data[i]));
+        cout << data[i] << " ";
     }
 }
