@@ -74,6 +74,7 @@ public:
             printf("1-");
             if (node == root) {
                 delete node;
+                root = nullptr;
                 return;
             }
             if (cmp(node->data, node->father->data))
@@ -171,6 +172,17 @@ public:
         }
     }
 
+    ~ThreadBinaryTree() {
+        Node *node = findFirst(), *next = findAfter(node);
+        if (node == nullptr)return;
+        while (next != nullptr) {
+            delete node;
+            node = next;
+            next = findAfter(next);
+        }
+        delete node;
+    }
+
 private:
     std::function<bool(T, T)> cmp;
     Node *root = nullptr;
@@ -191,6 +203,7 @@ private:
     }
 
     Node *findPre(Node *&node) {
+        if (node == nullptr)return nullptr;
         if (!node->leftUsed) {
             return node->leftSon;
         }
@@ -202,6 +215,7 @@ private:
     }
 
     Node *findAfter(Node *&node) {
+        if (node == nullptr)return nullptr;
         if (!node->rightUsed) {
             return node->rightSon;
         }
@@ -213,12 +227,14 @@ private:
     }
 
     Node *findFirst() {
+        if (root == nullptr)return nullptr;
         Node *node = root;
         while (node->leftUsed)node = node->leftSon;
         return node;
     }
 
     Node *findLast() {
+        if (root == nullptr)return nullptr;
         Node *node = root;
         while (node->rightUsed)node = node->rightSon;
         return node;
