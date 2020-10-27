@@ -38,6 +38,10 @@ public:
 
     void forEach(bool isReverse, std::function<void(T)> &function);
 
+    T getMin() const;
+
+    T getMax() const;
+
     ~ThreadBinaryTree();
 
 private:
@@ -278,6 +282,20 @@ void ThreadBinaryTree<T>::updateDepth(ThreadBinaryTree::Node *node) {
         node->depth = std::max(leftDepth, rightDepth) + 1;
         node = node->father;
     }
+}
+
+template<typename T>
+T ThreadBinaryTree<T>::getMin() const {
+    Node *node = findFirst();
+    if (node == nullptr)return nullptr;
+    return node->data;
+}
+
+template<typename T>
+T ThreadBinaryTree<T>::getMax() const {
+    Node *node = findLast();
+    if (node == nullptr)return nullptr;
+    return node->data;
 }
 
 #endif //DS2020_THREADEDBINARYTREE_H
