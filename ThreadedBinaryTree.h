@@ -205,7 +205,7 @@ void ThreadBinaryTree<T>::forEach(bool isReverse, std::function<void(T)> &functi
 }
 
 template<typename T>
-ThreadBinaryTree::Node *ThreadBinaryTree<T>::findNode(const T &element) const {
+typename ThreadBinaryTree<T>::Node *ThreadBinaryTree<T>::findNode(const T &element) const {
     if (root == nullptr)return nullptr;
     Node *tmp = root;
     while (cmp(element, tmp->data) ^ cmp(tmp->data, element)) {
