@@ -127,10 +127,9 @@ void AVLTree<T, Container, less>::update(AVLTree::Node *node) {
     int calcThis = calcRotate(node), calcSon;
     if (calcThis < -1) {
         calcSon = calcRotate(node->leftSon);
-        if (calcSon < 0) {
+        if (calcSon <= 0) {
             leftRotate(node);
-        }
-        if (calcSon > 0) {
+        } else {
             leftRotate(node->leftSon);
             rightRotate(node);
         }
@@ -140,8 +139,7 @@ void AVLTree<T, Container, less>::update(AVLTree::Node *node) {
         if (calcSon < 0) {
             rightRotate(node->rightSon);
             leftRotate(node);
-        }
-        if (calcSon > 0) {
+        } else {
             leftRotate(node);
         }
     }
