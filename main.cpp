@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <random>
 #include <ctime>
-#include "ThreadedBinaryTree.h"
+#include "AVLTree.h"
 #include "Tree.h"
 
 using std::cin;
@@ -30,13 +30,13 @@ static int data[109];
 int main() {
     int n;
     cin >> n;
-    ThreadBinaryTree<myInt> tree{};
+    AVLTree<myInt> tree{};
     for (int i = 0; i < n; i++) {
         data[i] = i;
     }
     std::shuffle(data, data + n, std::mt19937(std::random_device()()));
     for (int i = 0; i < n; i++) {
-        tree.addNode(myInt(data[i]));
+        tree.push(myInt(data[i]));
         cout << data[i] << " ";
     }
     puts("");

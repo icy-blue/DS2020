@@ -25,13 +25,17 @@ class AVLTree {
 
     Node *root;
 
-    AVLTree() = default;
-
     void update(Node *node);
 
     Node *findRankOf(unsigned int rank) const;
 
     Node *findMin(Node *node);
+
+    Node *findMax(Node *node);
+
+    Node *findPrev(Node *node);
+
+    Node *findNext(Node *node);
 
     Node *findNode(T data);
 
@@ -50,6 +54,7 @@ public:
 
     T getRankOf(int rank) const;
 
+    AVLTree() = default;
 };
 
 template<typename T, typename Container, typename less>
@@ -164,15 +169,6 @@ typename AVLTree<T, Container, less>::Node *AVLTree<T, Container, less>::findRan
 }
 
 template<typename T, typename Container, typename less>
-typename AVLTree<T, Container, less>::Node *AVLTree<T, Container, less>::findMin(AVLTree::Node *node) {
-    if (node == nullptr)return nullptr;
-    while (true) {
-        if (node->leftSon != nullptr) { node = node->leftSon; }
-        else return node;
-    }
-}
-
-template<typename T, typename Container, typename less>
 void AVLTree<T, Container, less>::leftRotate(AVLTree::Node *node) {
     if (node == root) root = node->rightSon;
     Node *newFather = node->rightSon;
@@ -219,6 +215,58 @@ int AVLTree<T, Container, less>::calcRotate(AVLTree::Node *node) {
     int left = node->leftSon == nullptr ? 0 : node->leftSon->size;
     int right = node->rightSon == nullptr ? 0 : node->rightSon->size;
     return right - left;
+}
+
+template<typename T, typename Container, typename less>
+typename AVLTree<T, Container, less>::Node *AVLTree<T, Container, less>::findMin(AVLTree::Node *node) {
+    if (node == nullptr)return nullptr;
+    while (true) {
+        if (node->leftSon != nullptr) node = node->leftSon;
+        else return node;
+    }
+}
+
+template<typename T, typename Container, typename less>
+typename AVLTree<T, Container, less>::Node *AVLTree<T, Container, less>::findMax(AVLTree::Node *node) {
+    if (node == nullptr)return nullptr;
+    while (true) {
+        if (node->rightSon != nullptr) node = node->rightSon;
+        else return node;
+    }
+}
+
+template<typename T, typename Container, typename less>
+typename AVLTree<T, Container, less>::Node *AVLTree<T, Container, less>::findPrev(AVLTree::Node *node) {
+    if (node->leftUsed) {
+        return node->leftSon;
+    }
+    Node *tmp = node;
+    while (tmp != nullptr) {
+        if (tmp->father == nullptr)return nullptr;
+        if (less(tmp->data, tmp->father->data)) {
+            tmp = tmp->father;
+        } else {
+            return tmp->father;
+        }
+    }
+    return tmp;
+}
+
+template<typename T, typename Container, typename less>
+typename AVLTree<T, Container, less>::Node *AVLTree<T, Container, less>::findNext(AVLTree::Node *node) {
+    if (node->rightUsed) {
+        return node->rightSon;
+    }
+    Node *tmp = node;
+    while (tmp != nullptr) {
+        if (tmp->father == nullptr)return nullptr;
+        if (less(tmp->data, tmp->father->data)) {
+            return tmp->father;
+        } else {
+            tmp = tmp->father;
+        }
+    }
+    return tmp;
 }
 
 #endif //DS2020_AVLTREE_H
