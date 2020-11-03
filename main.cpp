@@ -14,43 +14,30 @@ using std::cout;
 using std::endl;
 using std::vector;
 
-class myInt {
-public:
-    int data;
-
-    explicit myInt(int _data) : data(_data) {}
-
-    bool operator<(const myInt &rt) const {
-        return data < rt.data;
-    }
-};
-
-static int data[109];
+AVLTree<int> tree;
 
 int main() {
     int n;
     cin >> n;
-    AVLTree<myInt> tree{};
-    for (int i = 0; i < n; i++) {
-        data[i] = i;
-    }
-    std::shuffle(data, data + n, std::mt19937(std::random_device()()));
-    for (int i = 0; i < n; i++) {
-        tree.push(myInt(data[i]));
-        cout << data[i] << " ";
-    }
-    puts("");
-    std::shuffle(data, data + n, std::mt19937(std::random_device()()));
-    tree.forEach(false, [](myInt a) -> void { cout << a.data << " "; });
-    puts("");
-    tree.forEach(true, [](myInt a) -> void { cout << a.data << " "; });
-    puts("");
-    for (int i = 0; i < n; i++) {
-        cout << data[i] << " ";
-    }
-    puts("");
-    for (int i = 0; i < n; i++) {
-        tree.delNode(myInt(data[i]));
-        cout << data[i] << " ";
+    for (auto i = 0; i < n; i++) {
+        int cmd, x;
+        cin >> cmd >> x;
+        switch (cmd) {
+            case 1:
+                tree.push(x);
+                break;
+            case 2:
+                tree.del(x);
+                break;
+            case 3:
+                cout << tree.rank(x) + 1 << endl;
+                break;
+            case 4:
+                std::optional<int> oi = tree.getRankOf(x - 1);
+                if (oi) cout << *oi << endl;
+                break;
+//            case 5:
+
+        }
     }
 }
