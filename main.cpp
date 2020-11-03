@@ -21,8 +21,10 @@ int main() {
     cin >> n;
     for (auto i = 0; i < n; i++) {
         int cmd, x;
+        std::optional<int> oi;
         cin >> cmd >> x;
         switch (cmd) {
+
             case 1:
                 tree.push(x);
                 break;
@@ -33,11 +35,15 @@ int main() {
                 cout << tree.rank(x) + 1 << endl;
                 break;
             case 4:
-                std::optional<int> oi = tree.getRankOf(x - 1);
+                oi = tree.getRankOf(x - 1);
                 if (oi) cout << *oi << endl;
                 break;
-//            case 5:
-
+            case 5:
+                tree.getRankOf(tree.rank(x) - 1);
+                break;
+            case 6:
+                tree.getRankOf(tree.rank(x) + 1);
+                break;
         }
     }
 }
