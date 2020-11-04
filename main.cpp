@@ -24,7 +24,6 @@ int main() {
         std::optional<int> oi;
         cin >> cmd >> x;
         switch (cmd) {
-
             case 1:
                 tree.push(x);
                 break;
@@ -39,10 +38,12 @@ int main() {
                 if (oi) cout << *oi << endl;
                 break;
             case 5:
-                tree.getRankOf(tree.rank(x) - 1);
+                oi = tree.getPrevData(x);
+                if (oi) cout << *oi << endl;
                 break;
             case 6:
-                tree.getRankOf(tree.rank(x) + 1);
+                oi = tree.getNextData(x);
+                if (oi) cout << *oi << endl;
                 break;
         }
     }
