@@ -10,6 +10,7 @@
 #include <vector>
 #include <functional>
 #include <cassert>
+#include <optional>
 #include "Queue.h"
 
 template<typename T, typename Container = std::vector<T>, typename less = std::less<typename Container::value_type>>
