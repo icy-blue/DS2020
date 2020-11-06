@@ -49,10 +49,9 @@ int FenwickTree<T>::lowbit(int x) {
 }
 
 template<typename T>
-FenwickTree<T>::FenwickTree(int size, T templateValue) {
+FenwickTree<T>::FenwickTree(int size, T templateValue):_templateValue(templateValue) {
     _size = size;
     vector.resize(size, templateValue);
-    _templateValue = templateValue;
 }
 
 template<typename T>
@@ -95,10 +94,9 @@ std::optional<T> FenwickTree<T>::querySum(int pos) const {
 }
 
 template<typename T>
-FenwickTree<T>::FenwickTree(std::vector<T> array) {
+FenwickTree<T>::FenwickTree(std::vector<T> array):_templateValue(array[0]) {
     assert(!array.empty());
-    vector.resize(array.size());
-    _templateValue = array[0];
+    vector.resize(array.size(), array[0]);
     _size = array.size();
     for (auto i = 1; i < array.size(); i++) {
         vector[i] += array[i];
