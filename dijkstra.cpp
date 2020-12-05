@@ -88,4 +88,19 @@ namespace DS2020 {
     void addEdgeFromNode(Node *from, Node *to, TYPE_DISTANCE dis) {
         nodeList[from->id].edges.emplace_back(from, to, dis);
     }
+
+    void printTrace(Node &source, Node &destination) {
+        std::optional<std::stack<Node *>> result = traceRoute(source, destination);
+        if (!result) {
+            printf("Cannot find the route from Node %d to Node %d\n", source.id, destination.id);
+        } else {
+            printf("Route from Node %d to Node %d:\n", source.id, destination.id);
+            while (!result->empty()) {
+                Node *node = result->top();
+                result->pop();
+                printf("%d ", node->id);
+            }
+            puts("");
+        }
+    }
 }
