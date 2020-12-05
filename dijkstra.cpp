@@ -55,7 +55,7 @@ namespace DS2020 {
             TYPE_DISTANCE disNow = queue.top().first;
             Node node = queue.top().second;
             queue.pop();
-            if (visit[node].id) continue;
+            if (visit[node.id]) continue;
             visit[node.id] = true;
             for (auto edge: node.edges) {
                 if (distance[edge.to->id] < disNow + edge.distance) {
