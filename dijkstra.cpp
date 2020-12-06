@@ -33,34 +33,33 @@ namespace DS2020 {
 
         bool operator<(const Node &rt) const {
             return this->id < rt.id;
-        }
+        } //comparable
     };
 
     std::vector<TYPE_DISTANCE> distance;
     std::vector<Node *> trace;
     std::vector<Node> nodeList;
 
-    void dijkstra(std::vector<Node> &nodes, Node &source) {
+    void dijkstra(const std::vector<Node> &nodes, const Node &source) {
         assert(!nodes.empty());
         distance.clear();
         distance.resize(nodes.size(), DISTANCE_MAX);
         trace.clear();
         trace.resize(nodes.size(), nullptr);
         std::vector<bool> visit(nodes.size());
-        std::priority_queue<std::pair<TYPE_DISTANCE, Node>> queue;
+        std::priority_queue<std::pair<TYPE_DISTANCE, Node>> priorityQueue;
         visit[source.id] = true;
         distance[source.id] = DISTANCE_ZERO;
-        queue.push(std::make_pair(DISTANCE_ZERO, source));
-        while (!queue.empty()) {
-            TYPE_DISTANCE disNow = queue.top().first;
-            Node node = queue.top().second;
-            queue.pop();
+        priorityQueue.push(std::make_pair(DISTANCE_ZERO, source));
+        while (!priorityQueue.empty()) {
+            auto[disNow, node] = priorityQueue.top();
+            priorityQueue.pop();
             if (visit[node.id]) continue;
             visit[node.id] = true;
             for (auto edge: node.edges) {
                 if (distance[edge.to->id] < disNow + edge.distance) {
                     distance[edge.to->id] = disNow + edge.distance;
-                    queue.push(std::make_pair(distance[edge.to->id], *edge.to));
+                    priorityQueue.push(std::make_pair(distance[edge.to->id], *edge.to));
                     trace[edge.to->id] = &node;
                 }
             }
