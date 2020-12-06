@@ -20,10 +20,10 @@ namespace DS2020 {
 
     class Edge {
     public:
-        Node *from, *to;
+        int from, to;
         TYPE_DISTANCE distance;
 
-        Edge(Node *_from, Node *_to, TYPE_DISTANCE _distance) : from(_from), to(_to), distance(_distance) {}
+        Edge(int _from, int _to, TYPE_DISTANCE _distance) : from(_from), to(_to), distance(_distance) {}
     };
 
     class Node {
@@ -57,10 +57,10 @@ namespace DS2020 {
             if (visit[node.id]) continue;
             visit[node.id] = true;
             for (auto edge: node.edges) {
-                if (distance[edge.to->id] < disNow + edge.distance) {
-                    distance[edge.to->id] = disNow + edge.distance;
-                    priorityQueue.push({distance[edge.to->id], *edge.to});
-                    trace[edge.to->id] = &node;
+                if (distance[edge.to] < disNow + edge.distance) {
+                    distance[edge.to] = disNow + edge.distance;
+                    priorityQueue.push({distance[edge.to], nodeList[edge.to]});
+                    trace[edge.to] = &node;
                 }
             }
         }
@@ -80,11 +80,11 @@ namespace DS2020 {
     }
 
     void addEdgeFromID(int from, int to, TYPE_DISTANCE dis) {
-        nodeList[from].edges.emplace_back(&nodeList[from], &nodeList[to], dis);
+        nodeList[from].edges.emplace_back(from, to, dis);
     }
 
     void addEdgeFromNode(Node *from, Node *to, TYPE_DISTANCE dis) {
-        nodeList[from->id].edges.emplace_back(from, to, dis);
+        nodeList[from->id].edges.emplace_back(from->id, to->id, dis);
     }
 
     void printTrace(Node &source, Node &destination) {
