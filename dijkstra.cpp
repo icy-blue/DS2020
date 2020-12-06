@@ -50,7 +50,7 @@ namespace DS2020 {
         std::priority_queue<std::pair<TYPE_DISTANCE, Node>> priorityQueue;
         visit[source.id] = true;
         distance[source.id] = DISTANCE_ZERO;
-        priorityQueue.push(std::make_pair(DISTANCE_ZERO, source));
+        priorityQueue.push({DISTANCE_ZERO, source});
         while (!priorityQueue.empty()) {
             auto[disNow, node] = priorityQueue.top();
             priorityQueue.pop();
@@ -59,7 +59,7 @@ namespace DS2020 {
             for (auto edge: node.edges) {
                 if (distance[edge.to->id] < disNow + edge.distance) {
                     distance[edge.to->id] = disNow + edge.distance;
-                    priorityQueue.push(std::make_pair(distance[edge.to->id], *edge.to));
+                    priorityQueue.push({distance[edge.to->id], *edge.to});
                     trace[edge.to->id] = &node;
                 }
             }
