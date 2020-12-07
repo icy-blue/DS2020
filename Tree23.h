@@ -100,6 +100,7 @@ public:
         }
         while (needUpdate) {
             needUpdate = false;
+            assert(tmpNode != nullptr);
             auto i = 0;
             while (i < node->father->nodeSize && less(node->father->data[i], tmpData) {
                 i++;
