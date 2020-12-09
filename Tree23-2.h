@@ -31,7 +31,7 @@ public:
 
     Node *root;
 
-    void insert(T data) {
+    void insert(const T &data) {
         if (root == nullptr) {
             root = new Node();
             root->data.push_back(data);
@@ -54,8 +54,7 @@ public:
     }
 
     void pushUp(Node *node) {
-        assert(node != nullptr);
-        while (node) {
+        while (node != nullptr) {
             if (node->nodeSize > SIZE_DATA) {
                 Node *node1 = new Node, *node2 = new Node;
                 node1->sons.push_back(node.sons[0]);
@@ -68,18 +67,43 @@ public:
                 node1->isLeaf = node2->isLeaf = node->isLeaf;
                 node1->depth = node2->depth = node1->depth;
                 T data = node.data[1];
-                node->data.clear();
-                node->sons.clear();
-                node->data[0] = data;
-                node->sons[0] = node1;
-                node->sons[1] = node2;
-                node->isLeaf = false;
-                node->depth++;
+                if (node->father != nullptr) {
+                    int i = 0;
+                    while (i < node->father->nodeSize and less(node->father->data[i], data)) i++;
+                    node->father->data.insert(node->father->data.begin() + i, data);
+                    node->father->sons.erase(node->father->sons.begin() + i);
+                    node->father->sons.insert(node->father->sons.begin() + i, node2);
+                    node->father->sons.insert(node->father->sons.begin() + i, node1);
+                } else {
+                    node->father = new Node;
+                    node->father->data.push_back(data);
+                    node->father->sons.push_back(node1);
+                    node->father->sons.push_back(node2);
+                    node->father->isLeaf = false;
+                    if (node == root) root = node->father;
+                }
+                delete node;
+                node = node1;
             }
             if (node->father != nullptr) {
                 node->father->depth = node->depth + 1;
             }
+            node = node->father;
         }
+    }
+
+    Node *findNext(Node *node, const T &data) const {
+        Node *tmp = node;
+        if (node != nullptr and node->rightSon != nullptr)return findMin(node->rightSon);
+        while (tmp != nullptr) {
+            if (tmp->father == nullptr)return nullptr;
+            if (cmp(tmp->data, tmp->father->data)) {
+                return tmp->father;
+            } else {
+                tmp = tmp->father;
+            }
+        }
+        return tmp;
     }
 };
 
