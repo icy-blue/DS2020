@@ -7,7 +7,9 @@
 #include "sort.h"
 #include <algorithm>
 #include <cstring>
+#include <iostream>
 #include "PriorityQueue.h"
+#include "KMP.h"
 
 #ifndef DS2020_TEST_H
 #define DS2020_TEST_H
@@ -81,6 +83,19 @@ void testPQ() {
         printf("%d ", queue2.top());
         queue2.pop();
     });
+}
+
+void testKMP() {
+    std::string str, pattern;
+    std::cin >> str >> pattern;
+    auto result = kmpAll(str, pattern);
+    for (auto i : result) {
+        std::cout << i + 1 << std::endl;
+    }
+    auto next = getNext(pattern);
+    for (auto i : next) {
+        std::cout << i + 1 << " ";
+    }
 }
 
 #endif
