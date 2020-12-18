@@ -142,6 +142,14 @@ public:
                             }
                             delete tmp->father;
                         }
+                    } else {
+                        int i = 0;
+                        while (less(tmp->father->data[i], tmp->data[0]))i++;
+                        tmp->data.push_back(tmp->father->data[i]);
+                        tmp->sons.push_back(sibling->sons[0]);
+                        tmp->father->data[i] = sibling->data[0];
+                        sibling->data.erase(sibling->data.begin());
+                        sibling->sons.erase(sibling->sons.begin());
                     }
                 }
             }
