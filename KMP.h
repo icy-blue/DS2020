@@ -14,7 +14,7 @@
 std::vector<int> getNext(std::string &pattern) {
     std::vector<int> next;
     next.push_back(-1);
-    int now = -1, i = 1;
+    auto now = -1, i = 1;
     while (i < pattern.length()) {
         if (pattern[i] == pattern[now + 1]) {
             now++;
@@ -31,7 +31,7 @@ std::vector<int> getNext(std::string &pattern) {
 }
 
 std::vector<int> kmpAll(std::string &str, std::string &pattern) {
-    std::vector<int> next = getNext(pattern);
+    auto next = getNext(pattern);
     std::vector<int> result;
     int i = 0, j = 0;
     while (i < str.length()) {
