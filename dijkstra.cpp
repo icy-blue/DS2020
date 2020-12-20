@@ -10,93 +10,65 @@
 #include <cassert>
 #include <stack>
 #include <optional>
+#include "Graph.h"
 
 namespace DS2020 {
-#define TYPE_DISTANCE double
-#define DISTANCE_MAX 1e10
+#define TYPE_DISTANCE int
+#define DISTANCE_MAX (TYPE_DISTANCE)(1e9)
 #define DISTANCE_ZERO 0
 
-    class Node;
-
-    class Edge {
-    public:
-        int from, to;
-        TYPE_DISTANCE distance;
-
-        Edge(int _from, int _to, TYPE_DISTANCE _distance) : from(_from), to(_to), distance(_distance) {}
-    };
-
-    class Node {
-    public:
-        int id; //from 0 to size(nodeList) - 1
-        std::vector<Edge> edges;
-
-        bool operator<(const Node &rt) const {
-            return this->id < rt.id;
-        } //comparable
-    };
-
     std::vector<TYPE_DISTANCE> distance;
-    std::vector<Node *> trace;
-    std::vector<Node> nodeList;
+    std::vector<int> trace;
 
     void dijkstra(const std::vector<Node> &nodes, const Node &source) {
         assert(!nodes.empty());
         distance.clear();
         distance.resize(nodes.size(), DISTANCE_MAX);
         trace.clear();
-        trace.resize(nodes.size(), nullptr);
+        trace.resize(nodes.size(), -1);
         std::vector<bool> visit(nodes.size());
-        std::priority_queue<std::pair<TYPE_DISTANCE, Node>> priorityQueue;
+        std::priority_queue<std::pair<TYPE_DISTANCE, int>> priorityQueue;
         visit[source.id] = true;
         distance[source.id] = DISTANCE_ZERO;
-        priorityQueue.push({DISTANCE_ZERO, source});
+        priorityQueue.push({DISTANCE_ZERO, source.id});
         while (!priorityQueue.empty()) {
-            auto[disNow, node] = priorityQueue.top();
+            auto[disNow, id] = priorityQueue.top();
             priorityQueue.pop();
-            if (visit[node.id]) continue;
-            visit[node.id] = true;
-            for (auto edge: node.edges) {
-                if (distance[edge.to] < disNow + edge.distance) {
-                    distance[edge.to] = disNow + edge.distance;
-                    priorityQueue.push({distance[edge.to], nodeList[edge.to]});
-                    trace[edge.to] = &node;
+            if (visit[id]) continue;
+            visit[id] = true;
+            for (auto edge: nodeList[id].edges) {
+                if (distance[edgeList[edge].to] < disNow + edgeList[edge].distance) {
+                    distance[edgeList[edge].to] = disNow + edgeList[edge].distance;
+                    priorityQueue.push({distance[edgeList[edge].to], nodeList[edgeList[edge].to].id});
+                    trace[edgeList[edge].to] = id;
                 }
             }
         }
     }
 
-    std::optional<std::stack<Node *>> traceRoute(Node &source, Node &destination) {
+    std::optional<std::stack<int>> traceRoute(Node &source, Node &destination) {
         assert(distance[source.id] == DISTANCE_ZERO);
-        std::stack<Node *> stack;
-        for (Node *now = &destination; now != &source; now = trace[now->id]) {
+        std::stack<int> stack;
+        for (Node *now = &destination; now != &source; now = &nodeList[trace[now->id]]) {
             if (now == nullptr) {
                 return std::nullopt;
             }
-            stack.push(now);
+            stack.push(now->id);
         }
-        stack.push(&source);
+        stack.push(source.id);
         return stack;
     }
 
-    void addEdgeFromID(int from, int to, TYPE_DISTANCE dis) {
-        nodeList[from].edges.emplace_back(from, to, dis);
-    }
-
-    void addEdgeFromNode(Node *from, Node *to, TYPE_DISTANCE dis) {
-        nodeList[from->id].edges.emplace_back(from->id, to->id, dis);
-    }
-
     void printTrace(Node &source, Node &destination) {
-        std::optional<std::stack<Node *>> result = traceRoute(source, destination);
+        std::optional<std::stack<int>> result = traceRoute(source, destination);
         if (!result) {
             printf("Cannot find the route from Node %d to Node %d\n", source.id, destination.id);
         } else {
             printf("Route from Node %d to Node %d:\n", source.id, destination.id);
             while (!result->empty()) {
-                Node *node = result->top();
+                int id = result->top();
                 result->pop();
-                printf("%d ", node->id);
+                printf("%d ", id);
             }
             puts("");
         }

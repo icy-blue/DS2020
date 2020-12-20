@@ -7,30 +7,10 @@
 #ifndef DS2020_DINIC_H
 #define DS2020_DINIC_H
 
+#include "Graph.h"
 #include <vector>
 #include <queue>
 #include <stack>
-
-class Edge {
-public:
-    int from, to, capacity;
-};
-
-class Node {
-public:
-    int id, depth;
-    std::vector<int> edges;
-};
-
-std::vector<Edge> edgeList;
-std::vector<Node> nodeList;
-
-void addEdge(int from, int to, int capacity) {
-    edgeList.push_back({from, to, capacity});
-    edgeList.push_back({to, from, 0});
-    nodeList[from].edges.push_back(edgeList.size() - 2);
-    nodeList[to].edges.push_back(edgeList.size() - 1);
-}
 
 void bfs(int source) {
     std::vector<bool> visited(nodeList.size());
@@ -42,7 +22,7 @@ void bfs(int source) {
         queue.pop();
         for (auto i: nodeList[x].edges) {
             if (visited[edgeList[i].to]) continue;
-            if (edgeList[i].capacity == 0) continue;
+            if (edgeList[i].distance == 0) continue;
             visited[edgeList[i].to] = true;
             nodeList[edgeList[i].to].depth = nodeList[x].depth + 1;
             queue.push(edgeList[i].to);
@@ -56,11 +36,11 @@ int dfs(const int &source, const int &destination, int node, int validFlow) {
     for (auto i: nodeList[node].edges) {
         auto edge = edgeList[i];
         if (nodeList[edge.to].depth != nodeList[edge.from].depth + 1) continue;
-        if (edge.capacity == 0) continue;
-        int flow = dfs(source, destination, edge.to, std::min(validFlow, edge.capacity));
+        if (edge.distance == 0) continue;
+        int flow = dfs(source, destination, edge.to, std::min(validFlow, edge.distance));
         if (flow > 0) {
-            edgeList[i].capacity -= flow;
-            edgeList[i ^ 1].capacity += flow;
+            edgeList[i].distance -= flow;
+            edgeList[i ^ 1].distance += flow;
             validFlow -= flow;
             sum += flow;
         } else {
