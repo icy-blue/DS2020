@@ -57,16 +57,16 @@ public:
         while (node != nullptr) {
             if (node->nodeSize > SIZE_DATA) {
                 Node *node1 = new Node, *node2 = new Node;
-                node1->sons.push_back(node.sons[0]);
-                node1->sons.push_back(node.sons[1]);
-                node1->data.push_back(node.data[0]);
-                node2->sons.push_back(node.sons[2]);
-                node2->sons.push_back(node.sons[3]);
-                node2->data.push_back(node.data[2]);
+                node1->sons.push_back(node->sons[0]);
+                node1->sons.push_back(node->sons[1]);
+                node1->data.push_back(node->data[0]);
+                node2->sons.push_back(node->sons[2]);
+                node2->sons.push_back(node->sons[3]);
+                node2->data.push_back(node->data[2]);
                 node1->father = node2->father = node;
                 node1->isLeaf = node2->isLeaf = node->isLeaf;
                 node1->depth = node2->depth = node1->depth;
-                T data = node.data[1];
+                T data = node->data[1];
                 if (node->father != nullptr) {
                     int i = 0;
                     while (i < node->father->nodeSize and less(node->father->data[i], data)) i++;
@@ -157,8 +157,8 @@ public:
             int i = 0;
             while (less(tmp->data[i], data) and !less(data, tmp->data[i])) i++;
             if (!(less(tmp->data[i], data) xor less(data, tmp->data[i]))) {
-                if (tmp.isLeaf) {
-                    tmp.data.erase(tmp.data.begin() + i);
+                if (tmp->isLeaf) {
+                    tmp->data.erase(tmp->data.begin() + i);
                     tmp->nodeSize--;
                     if (tmp == root and tmp->nodeSize == 0) {
                         delete tmp;
