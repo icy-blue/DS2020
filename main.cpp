@@ -3,8 +3,10 @@
   * 201905130198@mail.sdu.edu.cn
 */
 
-#include "test.h"
+
+#include "Tree23-2.h"
+#include "Kruskal.h"
 
 int main() {
-    testDinic();
+
 }
