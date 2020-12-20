@@ -110,7 +110,8 @@ public:
         };
         while (tmp != nullptr) {
             if (checkSingle(tmp)) {
-                if (less(data, tmp->data[0]) and checkSingle(tmp->sons[0])) {
+                if (less(node->data[0], data) and checkSingle(tmp->sons[0])
+                                                  or less(node->data[0], data) and checkSingle(tmp->sons[1])) {
                     Node *sibling = getSibling(tmp);
                     if (checkSingle(sibling)) {
                         if (less(sibling->data[0], tmp->data[0])) {
@@ -158,6 +159,11 @@ public:
             if (!(less(tmp->data[i], data) xor less(data, tmp->data[i]))) {
                 if (tmp.isLeaf) {
                     tmp.data.erase(tmp.data.begin() + i);
+                    tmp->nodeSize--;
+                    if (tmp == root and tmp->nodeSize == 0) {
+                        delete tmp;
+                        root = tmp = nullptr;
+                    }
                 } else {
                     Node *after = findNext(tmp, data);
                     assert(after != nullptr);
@@ -165,7 +171,10 @@ public:
                     after->data[0] = data;
                 }
             }
-
+        }
+        if (tmp != nullptr) {
+            pushUp(tmp);
+            //有可能有些节点的下放产生的4节点不能造成连续下放，所以还得再升回去
         }
     }
 
