@@ -19,7 +19,7 @@ namespace DS2020 {
         std::sort(_edgeList.begin(), _edgeList.end(),
                   [](const Edge &a, const Edge &b) -> bool { return a.distance < b.distance; });
         for (auto edge: _edgeList) {
-            if (!unionSet.checkSame(edge.from, edge.to))continue;
+            if (unionSet.checkSame(edge.from, edge.to))continue;
             unionSet.merge(edge.from, edge.to);
             result.push_back(edge);
         }

@@ -18,7 +18,7 @@ class Euler {
     std::vector<int> edgeTrace;
     std::vector<bool> visit;
 
-    bool dfs(int u) {
+    void dfs(int u) {
         for (auto i : DS2020::nodeList[u].edges) {
             if (visit[i]) continue;
             visit[i] = true;
