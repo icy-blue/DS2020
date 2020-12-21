@@ -12,15 +12,28 @@
 #include "Graph.h"
 #include "Union.h"
 #include <cassert>
+#include <algorithm>
 
 class Euler {
     std::vector<int> edgeTrace;
     std::vector<bool> visit;
 
-    int dfs(int u) {
+    bool dfs(int u) {
         for (auto i : DS2020::nodeList[u].edges) {
+            if (visit[i]) continue;
             visit[i] = true;
-            if (checkAllUnion()) getEulerRoute(DS2020::edgeList[i].to);
+            if (checkAllUnion()) {
+                edgeTrace.push_back(i);
+                dfs(DS2020::edgeList[i].to);
+            } else {
+                visit[i] = false;
+            }
+        }
+        for (auto i : DS2020::nodeList[u].edges) {
+            if (visit[i]) continue;
+            visit[i] = true;
+            edgeTrace.push_back(i);
+            dfs(DS2020::edgeList[i].to);
         }
     }
 
@@ -46,15 +59,11 @@ class Euler {
         return true;
     }
 
-    bool checkAllVisited() {
-        for (const auto &edge: DS2020::edgeList) {
-
-        }
-    }
-
 public:
-    std::vector<Edge> getEulerRoute(int source) {
-
+    std::vector<int> getEulerRoute(int source) {
+        edgeTrace.clear();
+        dfs(source);
+        return edgeTrace;
     }
 
     Euler() {
