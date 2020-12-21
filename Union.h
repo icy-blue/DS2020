@@ -21,7 +21,7 @@ public:
         }
     }
 
-    int get(int pos) const {
+    int get(int pos) {
         return nodeSet[pos] = get(nodeSet[pos]);
     }
 
@@ -35,8 +35,8 @@ public:
         init(size);
     }
 
-    bool checkSame(int a, int b) const {
-        return nodeSet[get(a)] == nodeSet[get(b)];
+    bool checkSame(int a, int b) {
+        return get(a) == get(b);
     }
 };
 

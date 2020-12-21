@@ -6,6 +6,7 @@
 
 #include "Tree23-2.h"
 #include "Kruskal.h"
+#include "Euler.h"
 
 int main() {
 
