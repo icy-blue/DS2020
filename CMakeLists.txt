@@ -3,4 +3,4 @@ project(DS2020)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(DS2020 main.cpp DoubleLinkedList.h Stack.h Queue.h sort.h test.h PriorityQueue.h ConvexHull.h Tree.h Tree23-2.h ThreadedBinaryTree.h AVLTree.h FenwickTree.h Tree23.h dijkstra.cpp KMP.h Dinic.h Union.h Kruskal.h Graph.h Euler.h)
+add_executable(DS2020 main.cpp DoubleLinkedList.h Stack.h Queue.h sort.h test.h PriorityQueue.h ConvexHull.h Tree.h Tree23-2.h ThreadedBinaryTree.h AVLTree.h FenwickTree.h Tree23.h KMP.h Dinic.h Union.h Kruskal.h Graph.h Euler.h Dijkstra.h)

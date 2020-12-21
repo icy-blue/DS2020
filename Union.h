@@ -36,7 +36,7 @@ public:
     }
 
     bool checkSame(int a, int b) {
-        return get(a) == get(b);
+        return nodeSet[get(a)] == nodeSet[get(b)];
     }
 };
 

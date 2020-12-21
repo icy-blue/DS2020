@@ -5,6 +5,9 @@
  * 201905130198@mail.sdu.edu.cn
  */
 
+#ifndef DS2020_DIJKSTRA_H
+#define DS2020_DIJKSTRA_H
+
 #include <vector>
 #include <queue>
 #include <cassert>
@@ -74,3 +77,4 @@ namespace DS2020 {
         }
     }
 }
+#endif //DS2020_DIJKSTRA_H

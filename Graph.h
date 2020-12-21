@@ -13,8 +13,7 @@
 namespace DS2020 {
     class Edge {
     public:
-        static int cnt;
-        int id, from, to, distance;
+        int from, to, distance;
     };
 
     class Node {
@@ -27,8 +26,8 @@ namespace DS2020 {
     std::vector<Node> nodeList;
 
     void addEdge(int from, int to, int distance) {
-        edgeList.push_back({Edge::cnt, from, to, distance});
-        nodeList[from].edges.push_back(Edge::cnt++);
+        edgeList.push_back({from, to, distance});
+        nodeList[from].edges.push_back(edgeList.size() - 1);
     }
 }
 #endif //DS2020_GRAPH_H
