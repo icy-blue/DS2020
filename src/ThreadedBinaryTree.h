@@ -148,6 +148,9 @@ void ThreadBinaryTree<T>::delNode(T element) {
             }
         }
     }
+    if (node->father != nullptr and cmp(node->father->data, node->data)) {
+        if (node->father->leftUsed) node->father->rightSon = node->father->leftSon;
+    }
     updateDepth(updateNode);
     if (pre != nullptr and !pre->rightUsed) pre->rightSon = after;
     if (after != nullptr and !after->leftUsed) after->leftSon = pre;

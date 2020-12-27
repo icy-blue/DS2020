@@ -250,6 +250,9 @@ typename DoubleLinkedList<T>::Node *DoubleLinkedList<T>::getNode(int index) cons
 template<typename T>
 void DoubleLinkedList<T>::delNode(DoubleLinkedList::Node *node) {
     if (node == nullptr) return;
+    if (node->prev == nullptr and node->next == nullptr) {
+        head = tail = nullptr;
+    }
     if (node->prev != nullptr) {
         node->prev->next = node->next;
     } else {

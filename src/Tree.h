@@ -74,10 +74,10 @@ public:
             }
             int midIndex = state.lt;
             while (mid[midIndex] != front[frontIndex])midIndex++;
-            if (state.lt < midIndex)
-                stack.push(BuildState(Type::VisitLeftSon, state.lt, midIndex, newNode));
             if (midIndex + 1 < state.rt)
                 stack.push(BuildState(Type::VisitRightSon, midIndex + 1, state.rt, newNode));
+            if (state.lt < midIndex)
+                stack.push(BuildState(Type::VisitLeftSon, state.lt, midIndex, newNode));
             frontIndex++;
         }
     }
