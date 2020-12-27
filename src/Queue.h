@@ -1,7 +1,9 @@
 /**
-  * Created by Huang Jingcheng on 2020/9/21.
-  * 201905130198@mail.sdu.edu.cn
-*/
+ * Created by Clion.
+ * User: icy
+ * Date: 2020/9/21
+ * i@icys.top
+ */
 
 #ifndef DS2020_QUEUE_H
 #define DS2020_QUEUE_H

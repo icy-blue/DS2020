@@ -1,8 +1,8 @@
 /**
  * Created by Clion.
- * User: Huang Jingcheng
+ * User: icy
  * Date: 2020/12/17
- * 201905130198@mail.sdu.edu.cn
+ * i@icys.top
  */
 #ifndef DS2020_DINIC_H
 #define DS2020_DINIC_H

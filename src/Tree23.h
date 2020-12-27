@@ -1,10 +1,9 @@
 /**
  * Created by Clion.
- * User: Huang Jingcheng
+ * User: icy
  * Date: 2020/12/1
- * 201905130198@mail.sdu.edu.cn
+ * i@icys.top
  */
-
 #ifndef DS2020_TREE23_H
 #define DS2020_TREE23_H
 

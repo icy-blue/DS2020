@@ -1,7 +1,9 @@
 /**
-  * Created by Huang Jingcheng on 2020/9/20.
-  * 201905130198@mail.sdu.edu.cn
-*/
+ * Created by Clion.
+ * User: icy
+ * Date: 2020/9/20
+ * i@icys.top
+ */
 
 
 #include <GL/glut.h>

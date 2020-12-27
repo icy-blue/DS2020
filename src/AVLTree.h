@@ -1,8 +1,9 @@
 /**
-  * Created by Huang Jingcheng on 2020/10/26.
-  * 201905130198@mail.sdu.edu.cn
-*/
-
+ * Created by Clion.
+ * User: icy
+ * Date: 2020/10/26
+ * i@icys.top
+ */
 
 #ifndef DS2020_AVLTREE_H
 #define DS2020_AVLTREE_H
