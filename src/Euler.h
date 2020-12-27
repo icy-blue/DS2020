@@ -12,28 +12,35 @@
 #include "Graph.h"
 #include "Union.h"
 #include <cassert>
+#include <queue>
 #include <algorithm>
 
 class Euler {
     std::vector<int> edgeTrace;
     std::vector<bool> visit;
+    std::queue<int> queue;
 
-    void dfs(int u) {
-        for (auto i : DS2020::nodeList[u].edges) {
-            if (visit[i]) continue;
-            visit[i] = true;
-            if (checkAllUnion()) {
-                edgeTrace.push_back(i);
-                dfs(DS2020::edgeList[i].to);
-            } else {
-                visit[i] = false;
+    void findRoute(int source) {
+        queue.push(source);
+        while (!queue.empty()) {
+            int u = queue.front();
+            queue.pop();
+            for (auto i : DS2020::nodeList[u].edges) {
+                if (visit[i]) continue;
+                visit[i] = true;
+                if (checkAllUnion()) {
+                    edgeTrace.push_back(i);
+                    queue.push(DS2020::edgeList[i].to);
+                } else {
+                    visit[i] = false;
+                }
             }
-        }
-        for (auto i : DS2020::nodeList[u].edges) {
-            if (visit[i]) continue;
-            visit[i] = true;
-            edgeTrace.push_back(i);
-            dfs(DS2020::edgeList[i].to);
+            for (auto i : DS2020::nodeList[u].edges) {
+                if (visit[i]) continue;
+                visit[i] = true;
+                edgeTrace.push_back(i);
+                queue.push(DS2020::edgeList[i].to);
+            }
         }
     }
 
@@ -62,7 +69,7 @@ class Euler {
 public:
     std::vector<int> getEulerRoute(int source) {
         edgeTrace.clear();
-        dfs(source);
+        findRoute(source);
         return edgeTrace;
     }
 

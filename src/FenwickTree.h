@@ -88,7 +88,7 @@ template<typename T>
 std::optional<T> FenwickTree<T>::querySum(int pos) const {
     if (!rangeCheck(pos)) return std::nullopt;
     T base = _templateValue;
-    while (pos >= 0) {
+    while (pos > 0) {
         base += vector[pos];
         pos -= lowbit(pos);
     }

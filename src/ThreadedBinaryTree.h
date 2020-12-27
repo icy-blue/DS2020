@@ -56,9 +56,9 @@ private:
 
     Node *findAfter(Node *&node) const;
 
-    Node *findFirst() const;
+    Node *findFirst(Node *&node) const;
 
-    Node *findLast() const;
+    Node *findLast(Node *&node) const;
 
     void updateDepth(Node *node);
 };
@@ -148,9 +148,6 @@ void ThreadBinaryTree<T>::delNode(T element) {
             }
         }
     }
-    if (node->father != nullptr and cmp(node->father->data, node->data)) {
-        if (node->father->leftUsed) node->father->rightSon = node->father->leftSon;
-    }
     updateDepth(updateNode);
     if (pre != nullptr and !pre->rightUsed) pre->rightSon = after;
     if (after != nullptr and !after->leftUsed) after->leftSon = pre;
@@ -195,13 +192,13 @@ void ThreadBinaryTree<T>::addNode(T element) {
 template<typename T>
 void ThreadBinaryTree<T>::forEach(bool isReverse, std::function<void(T)> &function) {
     if (!isReverse) {
-        Node *node = findFirst();
+        Node *node = findFirst(root);
         while (node != nullptr) {
             function(node->data);
             node = findAfter(node);
         }
     } else {
-        Node *node = findLast();
+        Node *node = findLast(root);
         while (node != nullptr) {
             function(node->data);
             node = findPre(node);
@@ -227,7 +224,7 @@ typename ThreadBinaryTree<T>::Node *ThreadBinaryTree<T>::findNode(const T &eleme
 
 template<typename T>
 ThreadBinaryTree<T>::~ThreadBinaryTree() {
-    Node *node = findFirst(), *next = findAfter(node);
+    Node *node = findFirst(root), *next = findAfter(node);
     if (node == nullptr)return;
     while (next != nullptr) {
         delete node;
@@ -243,11 +240,7 @@ typename ThreadBinaryTree<T>::Node *ThreadBinaryTree<T>::findPre(ThreadBinaryTre
     if (!node->leftUsed) {
         return node->leftSon;
     }
-    Node *tmp = node->leftSon;
-    while (tmp->rightUsed) {
-        tmp = tmp->rightSon;
-    }
-    return tmp;
+    return findLast(node->leftSon);
 }
 
 template<typename T>
@@ -256,27 +249,23 @@ typename ThreadBinaryTree<T>::Node *ThreadBinaryTree<T>::findAfter(ThreadBinaryT
     if (!node->rightUsed) {
         return node->rightSon;
     }
-    Node *tmp = node->rightSon;
-    while (tmp->leftUsed) {
-        tmp = tmp->leftSon;
-    }
+    return findFirst(node->rightSon);
+}
+
+template<typename T>
+typename ThreadBinaryTree<T>::Node *ThreadBinaryTree<T>::findFirst(ThreadBinaryTree::Node *&node) const {
+    if (node == nullptr)return nullptr;
+    Node *tmp = node;
+    while (tmp->leftUsed)tmp = tmp->leftSon;
     return tmp;
 }
 
 template<typename T>
-typename ThreadBinaryTree<T>::Node *ThreadBinaryTree<T>::findFirst() const {
-    if (root == nullptr)return nullptr;
-    Node *node = root;
-    while (node->leftUsed)node = node->leftSon;
-    return node;
-}
-
-template<typename T>
-typename ThreadBinaryTree<T>::Node *ThreadBinaryTree<T>::findLast() const {
-    if (root == nullptr)return nullptr;
-    Node *node = root;
-    while (node->rightUsed)node = node->rightSon;
-    return node;
+typename ThreadBinaryTree<T>::Node *ThreadBinaryTree<T>::findLast(ThreadBinaryTree::Node *&node) const {
+    if (node == nullptr)return nullptr;
+    Node *tmp = node;
+    while (tmp->rightUsed)tmp = tmp->rightSon;
+    return tmp;
 }
 
 template<typename T>
@@ -291,14 +280,14 @@ void ThreadBinaryTree<T>::updateDepth(ThreadBinaryTree::Node *node) {
 
 template<typename T>
 T ThreadBinaryTree<T>::getMin() const {
-    Node *node = findFirst();
+    Node *node = findFirst(root);
     if (node == nullptr)return nullptr;
     return node->data;
 }
 
 template<typename T>
 T ThreadBinaryTree<T>::getMax() const {
-    Node *node = findLast();
+    Node *node = findLast(root);
     if (node == nullptr)return nullptr;
     return node->data;
 }
