@@ -293,8 +293,8 @@ typename AVLTree<T, Container, less>::Node *AVLTree<T, Container, less>::findNod
 template<typename T, typename Container, typename less>
 int AVLTree<T, Container, less>::calcRotate(AVLTree::Node *node) const {
     if (node == nullptr) return 0;
-    int left = node->leftSon == nullptr ? 0 : node->leftSon->size;
-    int right = node->rightSon == nullptr ? 0 : node->rightSon->size;
+    int left = node->leftSon == nullptr ? 0 : node->leftSon->depth;
+    int right = node->rightSon == nullptr ? 0 : node->rightSon->depth;
     return right - left;
 }
 
