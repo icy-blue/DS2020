@@ -23,19 +23,23 @@ class Euler {
     void findRoute(int source) {
         queue.push(source);
         while (!queue.empty()) {
+            bool pushed = false;
             int u = queue.front();
             queue.pop();
             for (auto i : DS2020::nodeList[u].edges) {
+                if (pushed) break;
                 if (visit[i]) continue;
                 visit[i] = true;
                 if (checkAllUnion()) {
                     edgeTrace.push_back(i);
+                    pushed = true;
                     queue.push(DS2020::edgeList[i].to);
                 } else {
                     visit[i] = false;
                 }
             }
             for (auto i : DS2020::nodeList[u].edges) {
+                if (pushed) break;
                 if (visit[i]) continue;
                 visit[i] = true;
                 edgeTrace.push_back(i);
